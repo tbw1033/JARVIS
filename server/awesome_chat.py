@@ -889,12 +889,14 @@ def run_task(input, command, results, api_key, api_type, api_endpoint):
     return True
 
 def chat_huggingface(messages, api_key, api_type, api_endpoint, return_planning = False, return_results = False):
+    #message包括role和content
     start = time.time()
-    context = messages[:-1]
+    context = messages[:-1]#取最新一条消息做分解
     input = messages[-1]["content"]
     logger.info("*"*80)
     logger.info(f"input: {input}")
 
+    #划分任务？
     task_str = parse_task(context, input, api_key, api_type, api_endpoint)
 
     if "error" in task_str:
@@ -977,6 +979,7 @@ def chat_huggingface(messages, api_key, api_type, api_endpoint, return_planning 
 
 def test():
     # single round examples
+    #我们考虑测试，从这里开始，看一下具体的运行逻辑
     inputs = [
         "Given a collection of image A: /examples/a.jpg, B: /examples/b.jpg, C: /examples/c.jpg, please tell me how many zebras in these picture?"
         "Can you give me a picture of a small bird flying in the sky with trees and clouds. Generate a high definition image if possible.",
